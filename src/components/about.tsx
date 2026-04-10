@@ -1,4 +1,5 @@
 import { ShieldCheck, BadgeDollarSign, MapPin } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
 const differentiators = [
   {
@@ -35,7 +36,7 @@ export default function About() {
             <br />
             de confianza.
           </h2>
-          <div className="space-y-4 font-sans text-base md:text-lg text-foreground/70 leading-relaxed">
+          <div className="space-y-4 font-sans text-base md:text-lg text-muted-foreground leading-relaxed">
             <p>
               Gerardo Solís es un Asesor Inmobiliario Certificado especializado
               en ingeniería financiera patrimonial, con un enfoque en convertir
@@ -58,20 +59,22 @@ export default function About() {
         {/* Differentiators */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {differentiators.map((item) => (
-            <div
+            <Card
               key={item.title}
-              className="bg-card rounded-xl p-8 shadow-sm border border-border/50 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+              className="hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
             >
-              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-5">
-                <item.icon size={24} className="text-primary" />
-              </div>
-              <h3 className="font-serif text-lg font-semibold text-foreground mb-2">
-                {item.title}
-              </h3>
-              <p className="font-sans text-sm text-foreground/60 leading-relaxed">
-                {item.description}
-              </p>
-            </div>
+              <CardContent className="p-8">
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-5">
+                  <item.icon size={24} className="text-primary" />
+                </div>
+                <h3 className="font-serif text-lg font-semibold text-foreground mb-2">
+                  {item.title}
+                </h3>
+                <p className="font-sans text-sm text-muted-foreground leading-relaxed">
+                  {item.description}
+                </p>
+              </CardContent>
+            </Card>
           ))}
         </div>
 
@@ -80,7 +83,7 @@ export default function About() {
           <p className="font-serif text-xl md:text-2xl text-foreground/80 italic">
             &ldquo;Los pequeños detalles marcan mucho la diferencia.&rdquo;
           </p>
-          <cite className="block mt-3 font-sans text-sm text-foreground/50 not-italic">
+          <cite className="block mt-3 font-sans text-sm text-muted-foreground not-italic">
             — Gerardo Solís
           </cite>
         </blockquote>

@@ -10,6 +10,8 @@ import {
   Users,
   Bed,
 } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 interface PropertyModel {
   name: string;
@@ -87,19 +89,19 @@ const developments: Development[] = [
 
 function DevelopmentCard({ dev }: { dev: Development }) {
   return (
-    <div className="bg-card rounded-2xl border border-border/50 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
+    <Card className="overflow-hidden hover:shadow-md transition-shadow duration-200">
       {/* Image placeholder */}
-      <div className="aspect-[16/9] bg-gradient-to-br from-primary/5 to-secondary/10 flex items-center justify-center">
-        <span className="font-sans text-sm text-foreground/30">
+      <div className="aspect-[16/9] bg-gradient-to-br from-brand-dark/5 to-primary/10 flex items-center justify-center">
+        <span className="font-sans text-sm text-muted-foreground/50">
           Render del desarrollo
         </span>
       </div>
 
-      <div className="p-8">
+      <CardContent className="p-8">
         <h3 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-2">
           {dev.name}
         </h3>
-        <p className="font-sans text-base text-foreground/60 mb-8">
+        <p className="font-sans text-base text-muted-foreground mb-8">
           {dev.description}
         </p>
 
@@ -116,58 +118,40 @@ function DevelopmentCard({ dev }: { dev: Development }) {
           ))}
         </div>
 
-        {/* Models table */}
-        <div className="overflow-x-auto mb-8">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b border-border">
-                <th className="font-sans text-xs font-semibold uppercase tracking-wider text-foreground/50 pb-3">
-                  Modelo
-                </th>
-                <th className="font-sans text-xs font-semibold uppercase tracking-wider text-foreground/50 pb-3">
-                  Tipo
-                </th>
-                <th className="font-sans text-xs font-semibold uppercase tracking-wider text-foreground/50 pb-3">
-                  <span className="inline-flex items-center gap-1">
-                    <Bed size={14} />
-                    Rec.
-                  </span>
-                </th>
-                <th className="font-sans text-xs font-semibold uppercase tracking-wider text-foreground/50 pb-3">
-                  Precio
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {dev.models.map((model) => (
-                <tr
-                  key={model.name}
-                  className="border-b border-border/30 last:border-0"
-                >
-                  <td className="font-sans font-semibold text-foreground py-3">
-                    {model.name}
-                  </td>
-                  <td className="font-sans text-sm text-foreground/60 py-3">
-                    {model.type}
-                  </td>
-                  <td className="font-sans text-sm text-foreground/60 py-3">
-                    {model.bedrooms}
-                  </td>
-                  <td className="font-sans text-sm font-medium text-primary py-3">
-                    {model.price}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {/* Models */}
+        <div className="space-y-4 mb-8">
+          {dev.models.map((model) => (
+            <div
+              key={model.name}
+              className="flex items-center justify-between gap-4 py-3 border-b border-border last:border-0"
+            >
+              <div className="flex items-center gap-3">
+                <span className="font-sans font-semibold text-foreground">
+                  {model.name}
+                </span>
+                <Badge variant="secondary" className="font-sans text-xs">
+                  {model.type}
+                </Badge>
+              </div>
+              <div className="text-right">
+                <span className="font-sans text-sm font-medium text-primary">
+                  {model.price}
+                </span>
+                <span className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
+                  <Bed size={12} />
+                  {model.bedrooms} rec.
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Selling phrase */}
-        <p className="font-sans text-sm italic text-foreground/50">
+        <p className="font-sans text-sm italic text-muted-foreground">
           {dev.sellingPhrase}
         </p>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
 

@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { Cinzel, Josefin_Sans, Geist } from "next/font/google";
+import { Cinzel, Josefin_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -31,7 +29,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={cn("h-full", "antialiased", cinzel.variable, josefin.variable, "font-sans", geist.variable)}
+      className={cn("h-full antialiased", cinzel.variable, josefin.variable)}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
