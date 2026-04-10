@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ShieldCheck, BadgeDollarSign, MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { BlurFade } from "@/components/ui/blur-fade";
@@ -28,39 +29,51 @@ export default function About() {
     <section id="sobre-mi" className="py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
         {/* Section header */}
-        <div className="max-w-3xl mb-20">
-          <BlurFade delay={0.1} inView>
-            <p className="font-sans text-sm font-semibold uppercase tracking-widest text-primary mb-4">
-              Sobre Mí
-            </p>
-          </BlurFade>
-          <BlurFade delay={0.2} inView>
-            <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground tracking-tight mb-8">
-              Tu asesor inmobiliario
-              <br />
-              de confianza.
-            </h2>
-          </BlurFade>
-          <BlurFade delay={0.3} inView>
+        <div className="mb-20">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
+            <div className="max-w-3xl">
+              <BlurFade delay={0.1} inView>
+                <p className="font-sans text-sm font-semibold uppercase tracking-widest text-primary mb-4">
+                  Sobre Mí
+                </p>
+                <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground tracking-tight mb-8">
+                  Tu asesor inmobiliario
+                  <br />
+                  de confianza.
+                </h2>
+              </BlurFade>
+              <BlurFade delay={0.3} inView>
             <div className="space-y-4 font-sans text-base md:text-lg text-muted-foreground leading-relaxed">
               <p>
-                Gerardo Solís es un Asesor Inmobiliario Certificado especializado
-                en ingeniería financiera patrimonial, con un enfoque en convertir
-                la capacidad de crédito en activos rentables.
+                Soy Asesor Inmobiliario Certificado, especializado en ingeniería
+                financiera patrimonial. Mi enfoque es convertir tu capacidad de
+                crédito en activos rentables.
               </p>
               <p>
-                Con una sólida reputación en la región de Bahía de Banderas, basa
-                su servicio en la honestidad radical, la transparencia y un
+                Con una sólida reputación en la región de Bahía de Banderas, baso
+                mi servicio en la honestidad radical, la transparencia y un
                 seguimiento cercano que garantiza decisiones financieras
                 sostenibles.
               </p>
               <p>
-                Su misión es acompañar a familias y profesionales en el camino
-                hacia la estabilidad financiera, eliminando la incertidumbre del
-                proceso de compraventa.
+                Mi misión es acompañarte en el camino hacia la estabilidad
+                financiera, eliminando la incertidumbre del proceso de
+                compraventa.
               </p>
             </div>
-          </BlurFade>
+              </BlurFade>
+            </div>
+
+            <BlurFade delay={0.2} inView>
+              <Image
+                src="/portrait.jpg"
+                alt="Gerardo Solís"
+                width={280}
+                height={280}
+                className="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover border-4 border-primary/20 shadow-lg shrink-0 mx-auto md:mx-0"
+              />
+            </BlurFade>
+          </div>
         </div>
 
         {/* Differentiators */}
