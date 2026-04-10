@@ -6,7 +6,7 @@
 
 :root {
   /* Design system: Dark + Gold (Luxury/Premium Brand) */
-  --primary: #A16207;
+  --primary: #CA8A04;
   --primary-foreground: #FFFFFF;
   --secondary: #44403C;
   --secondary-foreground: #FAFAF9;
@@ -23,7 +23,7 @@
   --destructive: #DC2626;
   --border: #D6D3D1;
   --input: #D6D3D1;
-  --ring: #A16207;
+  --ring: #CA8A04;
   --radius: 0.625rem;
 
   /* Custom tokens */

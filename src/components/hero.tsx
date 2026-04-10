@@ -2,6 +2,7 @@ import { MessageCircle } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { AnimatedShinyText } from "@/components/ui/animated-shiny-text";
+import { ScrollExpansionHero } from "@/components/ui/scroll-expansion-hero";
 import { cn } from "@/lib/utils";
 
 const WHATSAPP_URL =
@@ -9,34 +10,22 @@ const WHATSAPP_URL =
 
 export default function Hero() {
   return (
-    <section
-      id="inicio"
-      className="relative min-h-dvh flex items-center justify-center overflow-hidden"
+    <ScrollExpansionHero
+      mediaSrc="/hero-aerial.mp4"
+      bgImageSrc="/hero-image-2.jpg"
+      title="Convierte tu crédito"
+      titleAccent="en un patrimonio real."
     >
-      {/* Background placeholder — will be replaced with Gerardo's photo */}
-      <div className="absolute inset-0 bg-gradient-to-br from-brand-dark/5 via-background to-primary/5" />
-
-      {/* Decorative gold accent line */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-primary/60 to-primary" />
-
-      <div className="relative z-10 mx-auto max-w-5xl px-6 pt-24 pb-16 text-center">
+      <div className="mx-auto max-w-3xl text-center">
         <BlurFade delay={0.1} inView>
           <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 mb-8">
-            <AnimatedShinyText className="text-sm font-sans font-medium text-primary">
+            <AnimatedShinyText className="text-sm font-sans font-medium text-primary" shimmerWidth={150}>
               Asesor Inmobiliario Certificado
             </AnimatedShinyText>
           </div>
         </BlurFade>
 
         <BlurFade delay={0.2} inView>
-          <h1 className="font-serif font-bold tracking-tight text-foreground text-[clamp(2.5rem,8vw,6rem)] leading-[1.05] mb-8">
-            Convierte tu crédito
-            <br />
-            <span className="text-primary">en un patrimonio real.</span>
-          </h1>
-        </BlurFade>
-
-        <BlurFade delay={0.35} inView>
           <p className="font-sans text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed">
             Como experto en ingeniería financiera patrimonial, te ayudo a dejar de
             pagar renta y a construir estabilidad mediante una compra inteligente y
@@ -44,7 +33,7 @@ export default function Hero() {
           </p>
         </BlurFade>
 
-        <BlurFade delay={0.5} inView>
+        <BlurFade delay={0.35} inView>
           <a
             href={WHATSAPP_URL}
             target="_blank"
@@ -59,9 +48,6 @@ export default function Hero() {
           </a>
         </BlurFade>
       </div>
-
-      {/* Bottom fade into next section */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent" />
-    </section>
+    </ScrollExpansionHero>
   );
 }
