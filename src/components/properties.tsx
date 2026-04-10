@@ -12,12 +12,16 @@ import {
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { BlurFade } from "@/components/ui/blur-fade";
+import { NumberTicker } from "@/components/ui/number-ticker";
 
 interface PropertyModel {
   name: string;
   type: string;
   bedrooms: number;
-  price: string;
+  priceValue: number;
+  priceLabel: string;
+  priceRange?: boolean;
 }
 
 interface Development {
@@ -45,13 +49,15 @@ const developments: Development[] = [
         name: "Cuarzo",
         type: "Casa unifamiliar",
         bedrooms: 3,
-        price: "Desde $2,008,035 MXN",
+        priceValue: 2008035,
+        priceLabel: "Desde $2,008,035 MXN",
       },
       {
         name: "Ámbar",
         type: "Departamento",
         bedrooms: 3,
-        price: "Desde $1,476,520 MXN",
+        priceValue: 1476520,
+        priceLabel: "Desde $1,476,520 MXN",
       },
     ],
     sellingPhrase:
@@ -73,19 +79,38 @@ const developments: Development[] = [
         name: "Obsidiana",
         type: "Casa unifamiliar",
         bedrooms: 3,
-        price: "$2,583,295 – $2,633,545 MXN",
+        priceValue: 2583295,
+        priceLabel: "$2,583,295 – $2,633,545 MXN",
+        priceRange: true,
       },
       {
         name: "Diamante",
         type: "Casa premium",
         bedrooms: 3,
-        price: "Desde $3,253,283 MXN",
+        priceValue: 3253283,
+        priceLabel: "Desde $3,253,283 MXN",
       },
     ],
     sellingPhrase:
       "Invierte en un entorno residencial completo que combina plusvalía, confort y proyección a futuro.",
   },
 ];
+
+function PriceDisplay({ model }: { model: PropertyModel }) {
+  if (model.priceRange) {
+    return (
+      <span className="font-sans text-sm font-medium text-primary">
+        {model.priceLabel}
+      </span>
+    );
+  }
+
+  return (
+    <span className="font-sans text-sm font-medium text-primary">
+      Desde $<NumberTicker value={model.priceValue} className="text-sm font-medium text-primary" /> MXN
+    </span>
+  );
+}
 
 function DevelopmentCard({ dev }: { dev: Development }) {
   return (
@@ -134,10 +159,8 @@ function DevelopmentCard({ dev }: { dev: Development }) {
                 </Badge>
               </div>
               <div className="text-right">
-                <span className="font-sans text-sm font-medium text-primary">
-                  {model.price}
-                </span>
-                <span className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
+                <PriceDisplay model={model} />
+                <span className="flex items-center justify-end gap-1 text-xs text-muted-foreground mt-0.5">
                   <Bed size={12} />
                   {model.bedrooms} rec.
                 </span>
@@ -160,19 +183,25 @@ export default function Properties() {
     <section id="propiedades" className="py-24 md:py-32 bg-muted/30">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-16">
-          <p className="font-sans text-sm font-semibold uppercase tracking-widest text-primary mb-4">
-            Propiedades
-          </p>
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground tracking-tight">
-            Desarrollos exclusivos
-            <br />
-            en Bahía de Banderas.
-          </h2>
+          <BlurFade delay={0.1} inView>
+            <p className="font-sans text-sm font-semibold uppercase tracking-widest text-primary mb-4">
+              Propiedades
+            </p>
+          </BlurFade>
+          <BlurFade delay={0.2} inView>
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground tracking-tight">
+              Desarrollos exclusivos
+              <br />
+              en Bahía de Banderas.
+            </h2>
+          </BlurFade>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {developments.map((dev) => (
-            <DevelopmentCard key={dev.name} dev={dev} />
+          {developments.map((dev, index) => (
+            <BlurFade key={dev.name} delay={0.15 * index} inView>
+              <DevelopmentCard dev={dev} />
+            </BlurFade>
           ))}
         </div>
       </div>
