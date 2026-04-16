@@ -1,6 +1,19 @@
-import { AtSign, Phone, MessageCircle } from "lucide-react";
+import { Phone, MessageCircle } from "lucide-react";
+import { FaInstagram } from "react-icons/fa";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import {
+  GERARDO_PHONE_TEL,
+  INSTAGRAM_URL,
+  WHATSAPP_URL_ADVISORY,
+} from "@/lib/constants";
+
+const navLinks = [
+  { label: "Inicio", href: "#inicio" },
+  { label: "Sobre Mí", href: "#sobre-mi" },
+  { label: "Propiedades", href: "#propiedades" },
+  { label: "Contacto", href: "#contacto" },
+];
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -8,7 +21,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-border bg-brand-dark text-primary-foreground">
       <div className="mx-auto max-w-6xl px-6 py-12">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
           <div className="text-center md:text-left">
             <p className="font-serif text-lg font-bold">Gerardo Solís</p>
             <p className="font-sans text-sm text-primary-foreground/60 mt-1">
@@ -16,9 +29,24 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <nav
+            aria-label="Navegación del pie de página"
+            className="flex flex-wrap justify-center gap-x-6 gap-y-2"
+          >
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="font-sans text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors duration-200"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2 justify-center md:justify-end">
             <a
-              href="https://wa.me/523222111574"
+              href={WHATSAPP_URL_ADVISORY}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
@@ -30,7 +58,7 @@ export default function Footer() {
               <MessageCircle size={20} />
             </a>
             <a
-              href="tel:+523222111574"
+              href={GERARDO_PHONE_TEL}
               aria-label="Teléfono"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "icon" }),
@@ -40,7 +68,7 @@ export default function Footer() {
               <Phone size={20} />
             </a>
             <a
-              href="https://instagram.com/Gerardo_solis_realtor"
+              href={INSTAGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
@@ -49,7 +77,7 @@ export default function Footer() {
                 "text-primary-foreground/60 hover:text-primary-foreground hover:bg-primary-foreground/10"
               )}
             >
-              <AtSign size={20} />
+              <FaInstagram size={20} />
             </a>
           </div>
         </div>

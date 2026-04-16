@@ -10,6 +10,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { WHATSAPP_URL_ADVISORY } from "@/lib/constants";
 
 const navLinks = [
   { label: "Inicio", href: "#inicio" },
@@ -18,15 +19,12 @@ const navLinks = [
   { label: "Contacto", href: "#contacto" },
 ];
 
-const WHATSAPP_URL =
-  "https://wa.me/523222111574?text=Hola%20Gerardo%2C%20me%20interesa%20una%20asesor%C3%ADa";
-
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 inset-x-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <div className="mx-auto max-w-7xl flex items-center justify-between px-6 py-4">
+      <div className="mx-auto max-w-6xl flex items-center justify-between px-6 py-4">
         <a
           href="#inicio"
           className="font-serif text-xl font-bold tracking-tight text-foreground cursor-pointer"
@@ -46,7 +44,7 @@ export default function Navbar() {
             </a>
           ))}
           <a
-            href={WHATSAPP_URL}
+            href={WHATSAPP_URL_ADVISORY}
             target="_blank"
             rel="noopener noreferrer"
             className={cn(buttonVariants(), "gap-2")}
@@ -84,7 +82,7 @@ export default function Navbar() {
                 </a>
               ))}
               <a
-                href={WHATSAPP_URL}
+                href={WHATSAPP_URL_ADVISORY}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(buttonVariants(), "gap-2 mt-4")}

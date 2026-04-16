@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Waves,
   ShieldCheck,
@@ -9,11 +11,16 @@ import {
   Dumbbell,
   Users,
   Bed,
+  Bath,
+  Car,
+  Sofa,
+  Gem,
+  Key,
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { NumberTicker } from "@/components/ui/number-ticker";
+import { ExpandableCard } from "@/components/ui/expandable-card";
 
 interface PropertyModel {
   name: string;
@@ -27,6 +34,7 @@ interface PropertyModel {
 interface Development {
   name: string;
   description: string;
+  image: string;
   amenities: { icon: React.ElementType; label: string }[];
   models: PropertyModel[];
   sellingPhrase: string;
@@ -34,39 +42,38 @@ interface Development {
 
 const developments: Development[] = [
   {
-    name: "Zafiro Residencial",
-    description:
-      "Exclusividad accesible y diseño funcional en el corazón de Mezcales, Nayarit.",
+    name: "Verea Residencial",
+    description: "Venta directa · llave en mano · premium",
+    image:
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop",
     amenities: [
-      { icon: Waves, label: "Alberca con Casa Club" },
-      { icon: ShieldCheck, label: "Coto privado con seguridad" },
-      { icon: MapPin, label: "A 20 min de las playas" },
-      { icon: Building2, label: "Zona de alta plusvalía" },
-      { icon: Trees, label: "Áreas verdes" },
+      { icon: Sofa, label: "Entrega totalmente amueblada" },
+      { icon: Key, label: "Llave en mano — habita o renta de inmediato" },
+      { icon: Gem, label: "Acabados en granito y cristal templado" },
+      { icon: Bed, label: "3 recámaras" },
+      { icon: Bath, label: "2.5 baños" },
+      { icon: Car, label: "Cochera para 2 autos" },
+      { icon: MapPin, label: "Nuevo Nayarit, Rincón del Cielo" },
     ],
     models: [
       {
-        name: "Cuarzo",
-        type: "Casa unifamiliar",
+        name: "Verea",
+        type: "Casa premium — llave en mano",
         bedrooms: 3,
-        priceValue: 2008035,
-        priceLabel: "Desde $2,008,035 MXN",
-      },
-      {
-        name: "Ámbar",
-        type: "Departamento",
-        bedrooms: 3,
-        priceValue: 1476520,
-        priceLabel: "Desde $1,476,520 MXN",
+        priceValue: 4500000,
+        priceLabel: "$4,500,000 MXN",
+        priceRange: false,
       },
     ],
     sellingPhrase:
-      "Vive el mejor momento para ti y tu familia en un espacio diseñado para tu bienestar y crecimiento patrimonial.",
+      "Valor integral: ahorro en equipamiento, practicidad de entrega y la posibilidad de habitar o rentar de inmediato. Abierto a ofertas serias de contado o mediante crédito bancario.",
   },
   {
     name: "Altavela Diamante",
     description:
-      "Elegancia y estilo de vida superior en la zona de mayor crecimiento de San Vicente.",
+      "Elegancia superior en San Vicente",
+    image:
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
     amenities: [
       { icon: Waves, label: "Alberca con terraza y Casa Club" },
       { icon: Bike, label: "Ciclovía y trotapista" },
@@ -94,10 +101,43 @@ const developments: Development[] = [
     sellingPhrase:
       "Invierte en un entorno residencial completo que combina plusvalía, confort y proyección a futuro.",
   },
+  {
+    name: "Zafiro Residencial",
+    description:
+      "Exclusividad accesible en Mezcales, Nayarit",
+    image:
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+    amenities: [
+      { icon: Waves, label: "Alberca con Casa Club" },
+      { icon: ShieldCheck, label: "Coto privado con seguridad" },
+      { icon: MapPin, label: "A 20 min de las playas" },
+      { icon: Building2, label: "Zona de alta plusvalía" },
+      { icon: Trees, label: "Áreas verdes" },
+    ],
+    models: [
+      {
+        name: "Cuarzo",
+        type: "Casa unifamiliar",
+        bedrooms: 3,
+        priceValue: 2008035,
+        priceLabel: "Desde $2,008,035 MXN",
+      },
+      {
+        name: "Ámbar",
+        type: "Departamento",
+        bedrooms: 3,
+        priceValue: 1476520,
+        priceLabel: "Desde $1,476,520 MXN",
+      },
+    ],
+    sellingPhrase:
+      "Vive el mejor momento para ti y tu familia en un espacio diseñado para tu bienestar y crecimiento patrimonial.",
+  },
 ];
 
 function PriceDisplay({ model }: { model: PropertyModel }) {
-  if (model.priceRange) {
+  // Explicit price range string
+  if (model.priceRange === true) {
     return (
       <span className="font-sans text-sm font-medium text-primary">
         {model.priceLabel}
@@ -105,76 +145,30 @@ function PriceDisplay({ model }: { model: PropertyModel }) {
     );
   }
 
+  // Exact fixed price — no "Desde" prefix
+  if (model.priceRange === false) {
+    return (
+      <span className="font-sans text-sm font-medium text-primary">
+        $
+        <NumberTicker
+          value={model.priceValue}
+          className="text-sm font-medium text-primary"
+        />{" "}
+        MXN
+      </span>
+    );
+  }
+
+  // Default: "Desde" + ticker
   return (
     <span className="font-sans text-sm font-medium text-primary">
-      Desde $<NumberTicker value={model.priceValue} className="text-sm font-medium text-primary" /> MXN
+      Desde $
+      <NumberTicker
+        value={model.priceValue}
+        className="text-sm font-medium text-primary"
+      />{" "}
+      MXN
     </span>
-  );
-}
-
-function DevelopmentCard({ dev }: { dev: Development }) {
-  return (
-    <Card className="overflow-hidden hover:shadow-md transition-shadow duration-200">
-      {/* Image placeholder */}
-      <div className="aspect-[16/9] bg-gradient-to-br from-brand-dark/5 to-primary/10 flex items-center justify-center">
-        <span className="font-sans text-sm text-muted-foreground/50">
-          Render del desarrollo
-        </span>
-      </div>
-
-      <CardContent className="p-8">
-        <h3 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-2">
-          {dev.name}
-        </h3>
-        <p className="font-sans text-base text-muted-foreground mb-8">
-          {dev.description}
-        </p>
-
-        {/* Amenities */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
-          {dev.amenities.map((amenity) => (
-            <div
-              key={amenity.label}
-              className="flex items-center gap-3 text-sm text-foreground/70"
-            >
-              <amenity.icon size={18} className="text-primary shrink-0" />
-              <span className="font-sans">{amenity.label}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Models */}
-        <div className="space-y-4 mb-8">
-          {dev.models.map((model) => (
-            <div
-              key={model.name}
-              className="flex items-center justify-between gap-4 py-3 border-b border-border last:border-0"
-            >
-              <div className="flex items-center gap-3">
-                <span className="font-sans font-semibold text-foreground">
-                  {model.name}
-                </span>
-                <Badge variant="secondary" className="font-sans text-xs">
-                  {model.type}
-                </Badge>
-              </div>
-              <div className="text-right">
-                <PriceDisplay model={model} />
-                <span className="flex items-center justify-end gap-1 text-xs text-muted-foreground mt-0.5">
-                  <Bed size={12} />
-                  {model.bedrooms} rec.
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Selling phrase */}
-        <p className="font-sans text-sm italic text-muted-foreground">
-          {dev.sellingPhrase}
-        </p>
-      </CardContent>
-    </Card>
   );
 }
 
@@ -197,10 +191,65 @@ export default function Properties() {
           </BlurFade>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="flex flex-col gap-8">
           {developments.map((dev, index) => (
             <BlurFade key={dev.name} delay={0.15 * index} inView>
-              <DevelopmentCard dev={dev} />
+              <ExpandableCard
+                title={dev.name}
+                src={dev.image}
+                description={dev.description}
+                classNameExpanded="[&_h4]:font-sans [&_h4]:text-foreground [&_h4]:font-semibold [&_h4]:text-base"
+              >
+                {/* Amenities */}
+                <h4>Amenidades</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+                  {dev.amenities.map((amenity) => (
+                    <div
+                      key={amenity.label}
+                      className="flex items-center gap-3 text-sm"
+                    >
+                      <amenity.icon
+                        size={18}
+                        className="text-primary shrink-0"
+                      />
+                      <span className="font-sans">{amenity.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Models */}
+                <h4>Modelos disponibles</h4>
+                <div className="w-full space-y-4">
+                  {dev.models.map((model) => (
+                    <div
+                      key={model.name}
+                      className="flex items-center justify-between gap-4 py-3 border-b border-border last:border-0"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="font-sans font-semibold text-foreground">
+                          {model.name}
+                        </span>
+                        <Badge
+                          variant="secondary"
+                          className="font-sans text-xs"
+                        >
+                          {model.type}
+                        </Badge>
+                      </div>
+                      <div className="text-right">
+                        <PriceDisplay model={model} />
+                        <span className="flex items-center justify-end gap-1 text-xs text-muted-foreground mt-0.5">
+                          <Bed size={12} />
+                          {model.bedrooms} rec.
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Selling phrase */}
+                <p className="italic text-sm mt-2">{dev.sellingPhrase}</p>
+              </ExpandableCard>
             </BlurFade>
           ))}
         </div>

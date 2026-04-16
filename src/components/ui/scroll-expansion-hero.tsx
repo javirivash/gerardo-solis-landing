@@ -2,7 +2,6 @@
 
 import {
   useEffect,
-  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -31,8 +30,6 @@ export function ScrollExpansionHero({
   const [mediaFullyExpanded, setMediaFullyExpanded] = useState(false);
   const [touchStartY, setTouchStartY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-
-  const sectionRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
@@ -101,11 +98,25 @@ export function ScrollExpansionHero({
       }
     };
 
+    const handleAnchorClick = (event: MouseEvent) => {
+      const target = (event.target as Element | null)?.closest?.(
+        'a[href^="#"]'
+      );
+      if (!target) return;
+      const href = target.getAttribute("href");
+      if (href && href !== "#inicio" && !mediaFullyExpanded) {
+        setMediaFullyExpanded(true);
+        setShowContent(true);
+        setScrollProgress(1);
+      }
+    };
+
     window.addEventListener("wheel", handleWheel, { passive: false });
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("touchstart", handleTouchStart, { passive: false });
     window.addEventListener("touchmove", handleTouchMove, { passive: false });
     window.addEventListener("touchend", handleTouchEnd);
+    document.addEventListener("click", handleAnchorClick, true);
 
     return () => {
       window.removeEventListener("wheel", handleWheel);
@@ -113,6 +124,7 @@ export function ScrollExpansionHero({
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handleTouchEnd);
+      document.removeEventListener("click", handleAnchorClick, true);
     };
   }, [scrollProgress, mediaFullyExpanded, touchStartY]);
 
@@ -130,11 +142,8 @@ export function ScrollExpansionHero({
   const textTranslateX = scrollProgress * (isMobile ? 180 : 150);
 
   return (
-    <div
-      ref={sectionRef}
-      className="transition-colors duration-700 ease-in-out overflow-x-hidden"
-    >
-      <section className="relative flex flex-col items-center justify-start min-h-dvh">
+    <div className="transition-colors duration-700 ease-in-out overflow-x-hidden">
+      <section id="inicio" className="relative flex flex-col items-center justify-start min-h-dvh">
         <div className="relative w-full flex flex-col items-center min-h-dvh">
           {/* Background image that fades as video expands */}
           <motion.div
@@ -157,7 +166,7 @@ export function ScrollExpansionHero({
             <div className="absolute inset-0 bg-brand-dark/30" />
           </motion.div>
 
-          <div className="container mx-auto flex flex-col items-center justify-start relative z-10">
+          <div className="mx-auto max-w-6xl w-full px-6 flex flex-col items-center justify-start relative z-10">
             <div className="flex flex-col items-center justify-center w-full h-dvh relative">
               {/* Expanding video */}
               <div
@@ -178,6 +187,7 @@ export function ScrollExpansionHero({
                     loop
                     playsInline
                     preload="auto"
+                    aria-hidden="true"
                     className="w-full h-full object-cover rounded-xl"
                     controls={false}
                     disablePictureInPicture
@@ -206,27 +216,27 @@ export function ScrollExpansionHero({
               </div>
 
               {/* Title text that splits on scroll */}
-              <div className="flex items-center justify-center text-center gap-4 w-full relative z-10 flex-col [text-shadow:_0_2px_12px_rgba(0,0,0,0.7)]">
-                <motion.h1
-                  className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white"
+              <h1 className="flex items-center justify-center text-center gap-4 w-full relative z-10 flex-col [text-shadow:_0_2px_12px_rgba(0,0,0,0.7)] font-serif text-4xl md:text-5xl lg:text-6xl font-bold">
+                <motion.span
+                  className="text-white"
                   style={{ transform: `translateX(-${textTranslateX}vw)` }}
                 >
                   {title}
-                </motion.h1>
+                </motion.span>
                 {titleAccent && (
-                  <motion.h1
-                    className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-primary [text-shadow:_0_2px_12px_rgba(0,0,0,0.9)]"
+                  <motion.span
+                    className="text-primary [text-shadow:_0_2px_12px_rgba(0,0,0,0.9)]"
                     style={{ transform: `translateX(${textTranslateX}vw)` }}
                   >
                     {titleAccent}
-                  </motion.h1>
+                  </motion.span>
                 )}
-              </div>
+              </h1>
             </div>
 
             {/* Content revealed after full expansion */}
             <motion.section
-              className="flex flex-col w-full px-8 py-10 md:px-16 lg:py-20"
+              className="flex flex-col w-full py-10 lg:py-20"
               initial={{ opacity: 0 }}
               animate={{ opacity: showContent ? 1 : 0 }}
               transition={{ duration: 0.7 }}

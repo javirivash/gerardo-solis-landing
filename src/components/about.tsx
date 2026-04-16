@@ -30,8 +30,8 @@ export default function About() {
       <div className="mx-auto max-w-6xl px-6">
         {/* Section header */}
         <div className="mb-20">
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
-            <div className="max-w-3xl">
+          <div className="flex flex-col md:flex-row md:items-start gap-0">
+            <div className="flex-1">
               <BlurFade delay={0.1} inView>
                 <p className="font-sans text-sm font-semibold uppercase tracking-widest text-primary mb-4">
                   Sobre Mí
@@ -43,34 +43,34 @@ export default function About() {
                 </h2>
               </BlurFade>
               <BlurFade delay={0.3} inView>
-            <div className="space-y-4 font-sans text-base md:text-lg text-muted-foreground leading-relaxed">
-              <p>
-                Soy Asesor Inmobiliario Certificado, especializado en ingeniería
-                financiera patrimonial. Mi enfoque es convertir tu capacidad de
-                crédito en activos rentables.
-              </p>
-              <p>
-                Con una sólida reputación en la región de Bahía de Banderas, baso
-                mi servicio en la honestidad radical, la transparencia y un
-                seguimiento cercano que garantiza decisiones financieras
-                sostenibles.
-              </p>
-              <p>
-                Mi misión es acompañarte en el camino hacia la estabilidad
-                financiera, eliminando la incertidumbre del proceso de
-                compraventa.
-              </p>
-            </div>
+                <div className="space-y-4 font-sans text-base md:text-lg text-muted-foreground leading-relaxed">
+                  <p>
+                    Soy Asesor Inmobiliario Certificado, especializado en ingeniería
+                    financiera patrimonial. Mi enfoque es convertir tu capacidad de
+                    crédito en activos rentables.
+                  </p>
+                  <p>
+                    Con una sólida reputación en la región de Bahía de Banderas, baso
+                    mi servicio en la honestidad radical, la transparencia y un
+                    seguimiento cercano que garantiza decisiones financieras
+                    sostenibles.
+                  </p>
+                  <p>
+                    Mi misión es acompañarte en el camino hacia la estabilidad
+                    financiera, eliminando la incertidumbre del proceso de
+                    compraventa.
+                  </p>
+                </div>
               </BlurFade>
             </div>
 
-            <BlurFade delay={0.2} inView>
+            <BlurFade delay={0.2} inView direction="right">
               <Image
                 src="/portrait.jpg"
                 alt="Gerardo Solís"
-                width={280}
-                height={280}
-                className="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover border-4 border-primary/20 shadow-lg shrink-0 mx-auto md:mx-0"
+                width={400}
+                height={500}
+                className="shrink-0 w-64 h-80 md:w-80 md:h-96 mt-8 md:mt-0 mx-auto md:mx-0 md:ml-12 rounded-2xl object-cover object-top"
               />
             </BlurFade>
           </div>
@@ -79,7 +79,7 @@ export default function About() {
         {/* Differentiators */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {differentiators.map((item, index) => (
-            <BlurFade key={item.title} delay={0.15 * index} inView>
+            <BlurFade key={item.title} delay={0.4 + 0.15 * index} inView>
               <Card className="h-full hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
                 <CardContent className="p-8">
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-5">

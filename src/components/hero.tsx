@@ -4,9 +4,7 @@ import { BlurFade } from "@/components/ui/blur-fade";
 import { AnimatedShinyText } from "@/components/ui/animated-shiny-text";
 import { ScrollExpansionHero } from "@/components/ui/scroll-expansion-hero";
 import { cn } from "@/lib/utils";
-
-const WHATSAPP_URL =
-  "https://wa.me/523222111574?text=Hola%20Gerardo%2C%20me%20interesa%20precalificarme";
+import { WHATSAPP_URL_PREQUALIFY } from "@/lib/constants";
 
 export default function Hero() {
   return (
@@ -35,7 +33,7 @@ export default function Hero() {
 
         <BlurFade delay={0.35} inView>
           <a
-            href={WHATSAPP_URL}
+            href={WHATSAPP_URL_PREQUALIFY}
             target="_blank"
             rel="noopener noreferrer"
             className={cn(

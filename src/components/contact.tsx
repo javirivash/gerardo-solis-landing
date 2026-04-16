@@ -1,26 +1,44 @@
 "use client";
 
-import { useState } from "react";
-import { MessageCircle, Phone, AtSign, Loader2 } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { useState, useCallback } from "react";
+import { MessageCircle, Phone, Loader2, CheckCircle2 } from "lucide-react";
+import { FaInstagram } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
+import {
+  GERARDO_PHONE,
+  GERARDO_PHONE_DISPLAY,
+  GERARDO_PHONE_TEL,
+  INSTAGRAM_HANDLE,
+  INSTAGRAM_URL,
+} from "@/lib/constants";
 
-const GERARDO_PHONE = "523222111574";
-const WHATSAPP_CTA_URL =
-  "https://wa.me/523222111574?text=Hola%20Gerardo%2C%20quiero%20iniciar%20una%20asesor%C3%ADa";
+const PHONE_PATTERN = /^[\d\s\-+()]{7,20}$/;
 
-function buildWhatsAppUrl(data: {
-  name: string;
-  phone: string;
-  email: string;
-  message: string;
-}) {
+type FieldName = "name" | "phone" | "email" | "message";
+
+type FieldErrors = Partial<Record<FieldName, string>>;
+type TouchedFields = Partial<Record<FieldName, boolean>>;
+
+function validate(values: Record<FieldName, string>): FieldErrors {
+  const errors: FieldErrors = {};
+  if (!values.name || values.name.length < 5)
+    errors.name = "Ingresa tu nombre (mínimo 5 caracteres)";
+  if (!values.phone || !PHONE_PATTERN.test(values.phone))
+    errors.phone = "Ingresa un número válido (7–20 dígitos)";
+  if (!values.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email))
+    errors.email = "Ingresa un correo electrónico válido";
+  if (!values.message || values.message.length < 10)
+    errors.message = "Escribe un mensaje (mínimo 10 caracteres)";
+  return errors;
+}
+
+function buildWhatsAppUrl(data: Record<FieldName, string>) {
   const lines = [
     `Hola Gerardo, te contacto desde tu sitio web.`,
     ``,
@@ -34,35 +52,90 @@ function buildWhatsAppUrl(data: {
   return `https://wa.me/${GERARDO_PHONE}?text=${text}`;
 }
 
+function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null;
+  return (
+    <p id={id} role="alert" className="text-sm text-destructive mt-1">
+      {message}
+    </p>
+  );
+}
+
 export default function Contact() {
   const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [touched, setTouched] = useState<TouchedFields>({});
+  const [submitted, setSubmitted] = useState(false);
+
+  const markTouched = useCallback((field: FieldName) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+  }, []);
+
+  function getValues(form: HTMLFormElement): Record<FieldName, string> {
+    const fd = new FormData(form);
+    return {
+      name: (fd.get("name") as string).trim(),
+      phone: (fd.get("phone") as string).trim(),
+      email: (fd.get("email") as string).trim(),
+      message: (fd.get("message") as string).trim(),
+    };
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const form = e.currentTarget;
+    const data = getValues(form);
+    const fieldErrors = validate(data);
+
+    setTouched({ name: true, phone: true, email: true, message: true });
+    setSubmitted(true);
+    setErrors(fieldErrors);
+
+    if (Object.keys(fieldErrors).length > 0) return;
+
     setSubmitting(true);
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    const data = {
-      name: (formData.get("name") as string).trim(),
-      phone: (formData.get("phone") as string).trim(),
-      email: (formData.get("email") as string).trim(),
-      message: (formData.get("message") as string).trim(),
-    };
+    try {
+      await supabase.from("contact_submissions").insert(data);
+    } catch {
+      // Non-blocking — WhatsApp is the primary channel
+    }
 
-    // Save to Supabase (backup) — don't block on failure
-    supabase.from("contact_submissions").insert(data).then(() => {});
-
-    // Open WhatsApp with pre-filled message
     window.open(buildWhatsAppUrl(data), "_blank", "noopener,noreferrer");
 
     setSubmitting(false);
+    setSuccess(true);
+    form.reset();
+    setTouched({});
+    setSubmitted(false);
+  }
+
+  function resetSuccess() {
+    setSuccess(false);
+  }
+
+  // Live errors: only show for touched fields (or after first submit attempt)
+  function getVisibleErrors(form: HTMLFormElement | null): FieldErrors {
+    if (!form) return {};
+    const data = getValues(form);
+    const all = validate(data);
+    const visible: FieldErrors = {};
+    for (const key of Object.keys(all) as FieldName[]) {
+      if (touched[key] || submitted) visible[key] = all[key];
+    }
+    return visible;
+  }
+
+  const [errors, setErrors] = useState<FieldErrors>({});
+
+  function handleBlurOrChange(form: HTMLFormElement | null) {
+    setErrors(getVisibleErrors(form));
   }
 
   return (
     <section id="contacto" className="py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
           {/* Left — Info */}
           <div>
             <BlurFade delay={0.1} inView>
@@ -87,37 +160,23 @@ export default function Contact() {
             </BlurFade>
 
             <BlurFade delay={0.4} inView>
-              {/* WhatsApp CTA */}
-              <a
-                href={WHATSAPP_CTA_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  buttonVariants({ size: "lg" }),
-                  "px-8 py-4 h-auto text-base gap-3 shadow-md mb-10"
-                )}
-              >
-                <MessageCircle size={20} />
-                Iniciar asesoría personalizada
-              </a>
-
               {/* Contact details */}
               <div className="space-y-4">
                 <a
-                  href="tel:+523222111574"
+                  href={GERARDO_PHONE_TEL}
                   className="flex items-center gap-3 font-sans text-sm text-muted-foreground hover:text-primary transition-colors duration-200 cursor-pointer"
                 >
                   <Phone size={18} className="text-primary" />
-                  322 211 1574
+                  {GERARDO_PHONE_DISPLAY}
                 </a>
                 <a
-                  href="https://instagram.com/Gerardo_solis_realtor"
+                  href={INSTAGRAM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 font-sans text-sm text-muted-foreground hover:text-primary transition-colors duration-200 cursor-pointer"
                 >
-                  <AtSign size={18} className="text-primary" />
-                  @Gerardo_solis_realtor
+                  <FaInstagram size={18} className="text-primary" />
+                  @{INSTAGRAM_HANDLE}
                 </a>
               </div>
             </BlurFade>
@@ -127,64 +186,109 @@ export default function Contact() {
           <BlurFade delay={0.2} inView direction="right">
             <Card>
               <CardContent className="p-8 md:p-10">
-                <h3 className="font-serif text-xl font-semibold text-foreground mb-6">
-                  Envíame un mensaje
-                </h3>
+                {success ? (
+                  <div
+                    className="flex flex-col items-start gap-4 py-4"
+                    role="status"
+                    aria-live="polite"
+                  >
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                      <CheckCircle2 size={28} className="text-primary" />
+                    </div>
+                    <h3 className="font-serif text-2xl font-semibold text-foreground">
+                      ¡Mensaje enviado!
+                    </h3>
+                    <p className="font-sans text-sm text-muted-foreground leading-relaxed">
+                      Abrí WhatsApp con tu mensaje prellenado. Si no se abrió
+                      automáticamente, revisa tu navegador o vuelve a
+                      intentarlo.
+                    </p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={resetSuccess}
+                      className="mt-2"
+                    >
+                      Enviar otro mensaje
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                <div className="flex items-baseline justify-between mb-6">
+                  <h3 className="font-serif text-xl font-semibold text-foreground">
+                    Envíame un mensaje
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    <span className="text-primary">*</span> Obligatorio
+                  </p>
+                </div>
                 <form
                   onSubmit={handleSubmit}
-                  className="group space-y-5"
+                  onChange={(e) => handleBlurOrChange(e.currentTarget)}
+                  onBlur={(e) => {
+                    const target = e.target as unknown as { name?: string };
+                    const field = target.name as FieldName | undefined;
+                    if (field) markTouched(field);
+                    handleBlurOrChange(e.currentTarget);
+                  }}
+                  className="space-y-5"
+                  noValidate
                 >
                   <div className="space-y-1.5">
-                    <Label htmlFor="name">Nombre completo</Label>
+                    <Label htmlFor="name">Nombre completo <span className="text-primary">*</span></Label>
                     <Input
                       id="name"
                       name="name"
                       type="text"
                       placeholder="Tu nombre"
-                      required
-                      minLength={2}
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? "name-error" : undefined}
                     />
+                    <FieldError id="name-error" message={errors.name} />
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label htmlFor="phone">Teléfono</Label>
+                    <Label htmlFor="phone">Teléfono <span className="text-primary">*</span></Label>
                     <Input
                       id="phone"
                       name="phone"
                       type="tel"
                       placeholder="Tu número de teléfono"
-                      required
-                      pattern="[\d\s\-\+\(\)]{7,20}"
-                      title="Ingresa un número de teléfono válido"
+                      aria-invalid={!!errors.phone}
+                      aria-describedby={errors.phone ? "phone-error" : undefined}
                     />
+                    <FieldError id="phone-error" message={errors.phone} />
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label htmlFor="email">Correo electrónico</Label>
+                    <Label htmlFor="email">Correo electrónico <span className="text-primary">*</span></Label>
                     <Input
                       id="email"
                       name="email"
                       type="email"
                       placeholder="tu@email.com"
-                      required
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? "email-error" : undefined}
                     />
+                    <FieldError id="email-error" message={errors.email} />
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label htmlFor="message">Mensaje</Label>
+                    <Label htmlFor="message">Mensaje <span className="text-primary">*</span></Label>
                     <Textarea
                       id="message"
                       name="message"
                       rows={4}
                       placeholder="¿En qué puedo ayudarte?"
-                      required
-                      minLength={10}
+                      aria-invalid={!!errors.message}
+                      aria-describedby={errors.message ? "message-error" : undefined}
                     />
+                    <FieldError id="message-error" message={errors.message} />
                   </div>
 
                   <Button
                     type="submit"
-                    className="w-full gap-2 group-invalid:pointer-events-none group-invalid:opacity-50"
+                    className="w-full gap-2"
                     disabled={submitting}
                   >
                     {submitting ? (
@@ -200,6 +304,8 @@ export default function Contact() {
                     )}
                   </Button>
                 </form>
+                  </>
+                )}
               </CardContent>
             </Card>
           </BlurFade>
