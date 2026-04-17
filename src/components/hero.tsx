@@ -24,7 +24,7 @@ export default function Hero() {
         </BlurFade>
 
         <BlurFade delay={0.2} inView>
-          <p className="font-sans text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed">
+          <p className="font-sans text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed text-pretty">
             Como experto en ingeniería financiera patrimonial, te ayudo a dejar de
             pagar renta y a construir estabilidad mediante una compra inteligente y
             segura.

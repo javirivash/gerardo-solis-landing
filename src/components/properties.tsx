@@ -138,7 +138,7 @@ const developments: Development[] = [
 function PriceDisplay({ model }: { model: PropertyModel }) {
   if (model.priceRange === true) {
     return (
-      <span className="font-sans text-sm font-medium text-primary">
+      <span className="font-sans text-sm font-medium text-primary tabular-nums">
         {model.priceLabel}
       </span>
     );
@@ -146,7 +146,7 @@ function PriceDisplay({ model }: { model: PropertyModel }) {
 
   if (model.priceRange === false) {
     return (
-      <span className="font-sans text-sm font-medium text-primary">
+      <span className="font-sans text-sm font-medium text-primary tabular-nums">
         $
         <NumberTicker
           value={model.priceValue}
@@ -180,7 +180,7 @@ export default function Properties() {
             </p>
           </BlurFade>
           <BlurFade delay={0.2} inView>
-            <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground tracking-tight">
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground tracking-tight text-balance">
               Desarrollos exclusivos
               <br />
               en Bahía de Banderas.

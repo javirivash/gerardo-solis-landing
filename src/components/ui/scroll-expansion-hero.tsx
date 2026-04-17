@@ -225,7 +225,7 @@ export function ScrollExpansionHero({
               </div>
 
               {/* Title text that splits on scroll */}
-              <h1 className="flex items-center justify-center text-center gap-4 w-full relative z-10 flex-col [text-shadow:_0_2px_12px_rgba(0,0,0,0.7)] font-serif text-4xl md:text-5xl lg:text-6xl font-bold">
+              <h1 className="flex items-center justify-center text-center gap-4 w-full relative z-10 flex-col [text-shadow:_0_2px_12px_rgba(0,0,0,0.7)] font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-balance">
                 <motion.span
                   className="text-white"
                   style={{ transform: `translateX(-${textTranslateX}vw)` }}

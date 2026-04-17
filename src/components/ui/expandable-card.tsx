@@ -84,7 +84,7 @@ export function ExpandableCard({
           <AnimatePresence>
             {active && (
               <div
-                className="fixed inset-0 grid place-items-center z-[100] sm:mt-16 before:pointer-events-none"
+                className="fixed inset-0 grid place-items-center z-50 sm:mt-16 before:pointer-events-none"
               >
                 <motion.div
                   layoutId={`card-${title}-${id}`}
@@ -130,12 +130,12 @@ export function ExpandableCard({
                         type="button"
                         aria-label="Cerrar"
                         layoutId={`button-${title}-${id}`}
-                        className="h-10 w-10 shrink-0 flex items-center justify-center rounded-full bg-card text-foreground/70 border border-border hover:text-foreground hover:border-foreground/30 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        className="size-10 shrink-0 flex items-center justify-center rounded-full bg-card text-foreground/70 border border-border hover:text-foreground hover:border-foreground/30 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                         onClick={() => setActive(false)}
                       >
                         <motion.div
                           animate={{ rotate: active ? 45 : 0 }}
-                          transition={{ duration: 0.4 }}
+                          transition={{ duration: 0.2, ease: "easeOut" }}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -227,11 +227,11 @@ export function ExpandableCard({
             <motion.span
               aria-hidden="true"
               layoutId={`button-${title}-${id}`}
-              className="h-8 w-8 shrink-0 flex items-center justify-center rounded-full bg-card text-foreground/70 border border-border transition-colors duration-300"
+              className="size-8 shrink-0 flex items-center justify-center rounded-full bg-card text-foreground/70 border border-border transition-colors duration-200"
             >
               <motion.div
                 animate={{ rotate: active ? 45 : 0 }}
-                transition={{ duration: 0.4 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

@@ -142,14 +142,14 @@ export default function Contact() {
               </p>
             </BlurFade>
             <BlurFade delay={0.2} inView>
-              <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground tracking-tight mb-6">
+              <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground tracking-tight mb-6 text-balance">
                 Hablemos de tu
                 <br />
                 futuro patrimonio.
               </h2>
             </BlurFade>
             <BlurFade delay={0.3} inView>
-              <p className="font-sans text-base md:text-lg text-muted-foreground leading-relaxed mb-10">
+              <p className="font-sans text-base md:text-lg text-muted-foreground leading-relaxed mb-10 text-pretty">
                 Estoy listo para brindarte una asesoría clara, honesta y sin
                 &ldquo;letras chiquitas&rdquo;. Contáctame para evaluar tu perfil
                 crediticio y encontrar la propiedad que mejor se alinee a tus
@@ -190,13 +190,13 @@ export default function Contact() {
                     role="status"
                     aria-live="polite"
                   >
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center">
                       <CheckCircle2 size={28} className="text-primary" />
                     </div>
                     <h3 className="font-serif text-2xl font-semibold text-foreground">
                       ¡Mensaje enviado!
                     </h3>
-                    <p className="font-sans text-sm text-muted-foreground leading-relaxed">
+                    <p className="font-sans text-sm text-muted-foreground leading-relaxed text-pretty">
                       Abrí WhatsApp con tu mensaje prellenado. Si no se abrió
                       automáticamente, revisa tu navegador o vuelve a
                       intentarlo.

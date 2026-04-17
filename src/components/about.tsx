@@ -36,14 +36,14 @@ export default function About() {
                 <p className="font-sans text-sm font-semibold uppercase tracking-widest text-primary mb-4">
                   Sobre Mí
                 </p>
-                <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground tracking-tight mb-8">
+                <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground tracking-tight mb-8 text-balance">
                   Tu asesor inmobiliario
                   <br />
                   de confianza.
                 </h2>
               </BlurFade>
               <BlurFade delay={0.3} inView>
-                <div className="space-y-4 font-sans text-base md:text-lg text-muted-foreground leading-relaxed">
+                <div className="space-y-4 font-sans text-base md:text-lg text-muted-foreground leading-relaxed text-pretty">
                   <p>
                     Soy Asesor Inmobiliario Certificado, especializado en ingeniería
                     financiera patrimonial. Mi enfoque es convertir tu capacidad de
@@ -82,13 +82,13 @@ export default function About() {
             <BlurFade key={item.title} delay={0.4 + 0.15 * index} inView>
               <Card className="h-full hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
                 <CardContent className="p-8">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-5">
+                  <div className="size-12 rounded-lg bg-primary/10 flex items-center justify-center mb-5">
                     <item.icon size={24} className="text-primary" />
                   </div>
                   <h3 className="font-serif text-lg font-semibold text-foreground mb-2">
                     {item.title}
                   </h3>
-                  <p className="font-sans text-sm text-muted-foreground leading-relaxed">
+                  <p className="font-sans text-sm text-muted-foreground leading-relaxed text-pretty">
                     {item.description}
                   </p>
                 </CardContent>
