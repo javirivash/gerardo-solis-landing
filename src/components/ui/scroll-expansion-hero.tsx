@@ -186,9 +186,11 @@ export function ScrollExpansionHero({
                   maxWidth: "95vw",
                   maxHeight: "85vh",
                   boxShadow: "0px 0px 50px rgba(0, 0, 0, 0.3)",
+                  contain: "layout paint",
+                  willChange: mediaFullyExpanded ? "auto" : "width, height",
                 }}
               >
-                <div className="relative w-full h-full pointer-events-none">
+                <div className="relative w-full h-full pointer-events-none [transform:translateZ(0)]">
                   <video
                     src={mediaSrc}
                     autoPlay

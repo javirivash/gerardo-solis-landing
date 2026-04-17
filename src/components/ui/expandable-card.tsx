@@ -102,7 +102,7 @@ export function ExpandableCard({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-background/60 backdrop-blur-md h-full w-full z-10"
+                className="fixed inset-0 bg-background/70 backdrop-blur-sm h-full w-full z-10"
               />
             )}
           </AnimatePresence>
