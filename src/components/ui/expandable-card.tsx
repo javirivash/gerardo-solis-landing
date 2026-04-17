@@ -38,12 +38,36 @@ export function ExpandableCard({
     if (!active) return;
 
     const previouslyFocused = document.activeElement as HTMLElement | null;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     const focusTimeout = window.setTimeout(() => {
       closeButtonRef.current?.focus();
     }, 50);
 
+    const focusableSelector =
+      'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setActive(false);
+      if (event.key === "Escape") {
+        setActive(false);
+        return;
+      }
+      if (event.key !== "Tab" || !cardRef.current) return;
+      const focusables = cardRef.current.querySelectorAll<HTMLElement>(
+        focusableSelector
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const activeEl = document.activeElement as HTMLElement | null;
+      if (event.shiftKey && activeEl === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && activeEl === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
 
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
@@ -61,6 +85,7 @@ export function ExpandableCard({
       window.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("touchstart", handleClickOutside);
+      document.body.style.overflow = originalOverflow;
       previouslyFocused?.focus?.();
     };
   }, [active]);
@@ -147,6 +172,7 @@ export function ExpandableCard({
                             strokeWidth="2"
                             strokeLinecap="round"
                             strokeLinejoin="round"
+                            aria-hidden="true"
                           >
                             <path d="M5 12h14" />
                             <path d="M12 5v14" />
@@ -243,6 +269,7 @@ export function ExpandableCard({
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  aria-hidden="true"
                 >
                   <path d="M5 12h14" />
                   <path d="M12 5v14" />

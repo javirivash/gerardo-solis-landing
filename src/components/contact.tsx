@@ -231,6 +231,7 @@ export default function Contact() {
                   }}
                   className="space-y-5"
                   noValidate
+                  aria-busy={submitting}
                 >
                   <div className="space-y-1.5">
                     <Label htmlFor="name">Nombre completo <span className="text-primary">*</span></Label>
@@ -238,6 +239,7 @@ export default function Contact() {
                       id="name"
                       name="name"
                       type="text"
+                      required
                       placeholder="Tu nombre"
                       aria-invalid={!!errors.name}
                       aria-describedby={errors.name ? "name-error" : undefined}
@@ -251,6 +253,7 @@ export default function Contact() {
                       id="phone"
                       name="phone"
                       type="tel"
+                      required
                       placeholder="Tu número de teléfono"
                       aria-invalid={!!errors.phone}
                       aria-describedby={errors.phone ? "phone-error" : undefined}
@@ -264,6 +267,7 @@ export default function Contact() {
                       id="email"
                       name="email"
                       type="email"
+                      required
                       placeholder="tu@email.com"
                       aria-invalid={!!errors.email}
                       aria-describedby={errors.email ? "email-error" : undefined}
@@ -277,6 +281,7 @@ export default function Contact() {
                       id="message"
                       name="message"
                       rows={4}
+                      required
                       placeholder="¿En qué puedo ayudarte?"
                       aria-invalid={!!errors.message}
                       aria-describedby={errors.message ? "message-error" : undefined}
