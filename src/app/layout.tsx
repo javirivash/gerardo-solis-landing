@@ -20,7 +20,7 @@ const josefin = Josefin_Sans({
 });
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://gerardosolis.mx";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://gs-landing-preview.netlify.app";
 const TITLE = "Gerardo Solís — Asesor Inmobiliario Certificado";
 const DESCRIPTION =
   "Experto en ingeniería financiera patrimonial en Bahía de Banderas y Riviera Nayarit. Te ayudo a convertir tu crédito en un patrimonio real.";
