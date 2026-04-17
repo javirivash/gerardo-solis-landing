@@ -161,7 +161,7 @@ export default function Contact() {
               {/* Contact details */}
               <div className="space-y-4">
                 <a
-                  href={GERARDO_PHONE_TEL}
+                  href={`tel:${GERARDO_PHONE_TEL}`}
                   className="flex items-center gap-3 font-sans text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
                 >
                   <Phone size={18} className="text-primary" />

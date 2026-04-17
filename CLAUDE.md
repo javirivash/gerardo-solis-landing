@@ -84,6 +84,6 @@ Follow this workflow in order. Do not skip phases. Use the specified tool for ea
 - [x] 3.3 — SEO metadata (metadataBase, OG, Twitter, canonical, robots, JSON-LD RealEstateAgent)
 - [x] 3.4 — Motion performance (scroll-expansion-hero: contain/will-change on wrapper; expandable-card backdrop-blur-md → sm)
 - [x] 3.5 — Browser testing (playwright-cli: title, console clean, mobile nav, form validation, card expansion + Escape close)
-- [ ] 4.1 — Final commit
-- [ ] 4.2 — Push & PR
-- [ ] 4.3 — Deploy
+- [x] 4.1 — Final commit (3fe6785: Netlify config + .netlify ignore)
+- [x] 4.2 — Pushed to origin/main (no PR — direct to main)
+- [x] 4.3 — Deployed to https://gerardo-solis-landing.netlify.app

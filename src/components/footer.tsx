@@ -54,7 +54,7 @@ export default function Footer() {
               <MessageCircle size={20} />
             </a>
             <a
-              href={GERARDO_PHONE_TEL}
+              href={`tel:${GERARDO_PHONE_TEL}`}
               aria-label="Teléfono"
               className={iconLinkClass}
             >
