@@ -9,13 +9,16 @@ function waUrl(text: string) {
   return `https://wa.me/${GERARDO_PHONE}?text=${encodeURIComponent(text)}`;
 }
 
-export const WHATSAPP_URL_BASE = `https://wa.me/${GERARDO_PHONE}`;
 export const WHATSAPP_URL_ADVISORY = waUrl(
   "Hola Gerardo, me interesa una asesoría"
 );
 export const WHATSAPP_URL_PREQUALIFY = waUrl(
   "Hola Gerardo, me interesa precalificarme"
 );
-export const WHATSAPP_URL_GENERAL = waUrl(
-  "Hola Gerardo, te contacto desde tu sitio web"
-);
+
+export const NAV_LINKS = [
+  { label: "Inicio", href: "#inicio" },
+  { label: "Sobre Mí", href: "#sobre-mi" },
+  { label: "Propiedades", href: "#propiedades" },
+  { label: "Contacto", href: "#contacto" },
+];

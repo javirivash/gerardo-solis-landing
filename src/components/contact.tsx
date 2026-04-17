@@ -66,6 +66,7 @@ export default function Contact() {
   const [success, setSuccess] = useState(false);
   const [touched, setTouched] = useState<TouchedFields>({});
   const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<FieldErrors>({});
 
   const markTouched = useCallback((field: FieldName) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
@@ -114,7 +115,6 @@ export default function Contact() {
     setSuccess(false);
   }
 
-  // Live errors: only show for touched fields (or after first submit attempt)
   function getVisibleErrors(form: HTMLFormElement | null): FieldErrors {
     if (!form) return {};
     const data = getValues(form);
@@ -125,8 +125,6 @@ export default function Contact() {
     }
     return visible;
   }
-
-  const [errors, setErrors] = useState<FieldErrors>({});
 
   function handleBlurOrChange(form: HTMLFormElement | null) {
     setErrors(getVisibleErrors(form));
@@ -164,7 +162,7 @@ export default function Contact() {
               <div className="space-y-4">
                 <a
                   href={GERARDO_PHONE_TEL}
-                  className="flex items-center gap-3 font-sans text-sm text-muted-foreground hover:text-primary transition-colors duration-200 cursor-pointer"
+                  className="flex items-center gap-3 font-sans text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
                 >
                   <Phone size={18} className="text-primary" />
                   {GERARDO_PHONE_DISPLAY}
@@ -173,7 +171,7 @@ export default function Contact() {
                   href={INSTAGRAM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 font-sans text-sm text-muted-foreground hover:text-primary transition-colors duration-200 cursor-pointer"
+                  className="flex items-center gap-3 font-sans text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
                 >
                   <FaInstagram size={18} className="text-primary" />
                   @{INSTAGRAM_HANDLE}

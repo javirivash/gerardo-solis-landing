@@ -136,7 +136,6 @@ const developments: Development[] = [
 ];
 
 function PriceDisplay({ model }: { model: PropertyModel }) {
-  // Explicit price range string
   if (model.priceRange === true) {
     return (
       <span className="font-sans text-sm font-medium text-primary">
@@ -145,7 +144,6 @@ function PriceDisplay({ model }: { model: PropertyModel }) {
     );
   }
 
-  // Exact fixed price — no "Desde" prefix
   if (model.priceRange === false) {
     return (
       <span className="font-sans text-sm font-medium text-primary">
@@ -159,7 +157,6 @@ function PriceDisplay({ model }: { model: PropertyModel }) {
     );
   }
 
-  // Default: "Desde" + ticker
   return (
     <span className="font-sans text-sm font-medium text-primary">
       Desde $

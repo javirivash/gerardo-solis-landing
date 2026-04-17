@@ -5,15 +5,14 @@ import { cn } from "@/lib/utils";
 import {
   GERARDO_PHONE_TEL,
   INSTAGRAM_URL,
+  NAV_LINKS,
   WHATSAPP_URL_ADVISORY,
 } from "@/lib/constants";
 
-const navLinks = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Sobre Mí", href: "#sobre-mi" },
-  { label: "Propiedades", href: "#propiedades" },
-  { label: "Contacto", href: "#contacto" },
-];
+const iconLinkClass = cn(
+  buttonVariants({ variant: "ghost", size: "icon" }),
+  "text-primary-foreground/60 hover:text-primary-foreground hover:bg-primary-foreground/10"
+);
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -33,7 +32,7 @@ export default function Footer() {
             aria-label="Navegación del pie de página"
             className="flex flex-wrap justify-center gap-x-6 gap-y-2"
           >
-            {navLinks.map((link) => (
+            {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -50,20 +49,14 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "icon" }),
-                "text-primary-foreground/60 hover:text-primary-foreground hover:bg-primary-foreground/10"
-              )}
+              className={iconLinkClass}
             >
               <MessageCircle size={20} />
             </a>
             <a
               href={GERARDO_PHONE_TEL}
               aria-label="Teléfono"
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "icon" }),
-                "text-primary-foreground/60 hover:text-primary-foreground hover:bg-primary-foreground/10"
-              )}
+              className={iconLinkClass}
             >
               <Phone size={20} />
             </a>
@@ -72,10 +65,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "icon" }),
-                "text-primary-foreground/60 hover:text-primary-foreground hover:bg-primary-foreground/10"
-              )}
+              className={iconLinkClass}
             >
               <FaInstagram size={20} />
             </a>

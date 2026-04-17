@@ -2,6 +2,7 @@
 
 import {
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -28,72 +29,78 @@ export function ScrollExpansionHero({
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showContent, setShowContent] = useState(false);
   const [mediaFullyExpanded, setMediaFullyExpanded] = useState(false);
-  const [touchStartY, setTouchStartY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
+  const scrollProgressRef = useRef(0);
+  const mediaFullyExpandedRef = useRef(false);
+  const touchStartYRef = useRef(0);
+
   useEffect(() => {
+    const updateProgress = (newProgress: number) => {
+      if (newProgress === scrollProgressRef.current) return;
+      scrollProgressRef.current = newProgress;
+      setScrollProgress(newProgress);
+      if (newProgress >= 1) {
+        mediaFullyExpandedRef.current = true;
+        setMediaFullyExpanded(true);
+        setShowContent(true);
+      } else if (newProgress < 0.75) {
+        setShowContent(false);
+      }
+    };
+
+    const collapse = () => {
+      mediaFullyExpandedRef.current = false;
+      setMediaFullyExpanded(false);
+    };
+
     const handleWheel = (e: WheelEvent) => {
-      if (mediaFullyExpanded && e.deltaY < 0 && window.scrollY <= 5) {
-        setMediaFullyExpanded(false);
+      if (mediaFullyExpandedRef.current && e.deltaY < 0 && window.scrollY <= 5) {
+        collapse();
         e.preventDefault();
-      } else if (!mediaFullyExpanded) {
+      } else if (!mediaFullyExpandedRef.current) {
         e.preventDefault();
         const scrollDelta = e.deltaY * 0.0009;
         const newProgress = Math.min(
-          Math.max(scrollProgress + scrollDelta, 0),
+          Math.max(scrollProgressRef.current + scrollDelta, 0),
           1
         );
-        setScrollProgress(newProgress);
-
-        if (newProgress >= 1) {
-          setMediaFullyExpanded(true);
-          setShowContent(true);
-        } else if (newProgress < 0.75) {
-          setShowContent(false);
-        }
+        updateProgress(newProgress);
       }
     };
 
     const handleTouchStart = (e: TouchEvent) => {
-      setTouchStartY(e.touches[0].clientY);
+      touchStartYRef.current = e.touches[0].clientY;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (!touchStartY) return;
+      if (!touchStartYRef.current) return;
 
       const touchY = e.touches[0].clientY;
-      const deltaY = touchStartY - touchY;
+      const deltaY = touchStartYRef.current - touchY;
 
-      if (mediaFullyExpanded && deltaY < -20 && window.scrollY <= 5) {
-        setMediaFullyExpanded(false);
+      if (mediaFullyExpandedRef.current && deltaY < -20 && window.scrollY <= 5) {
+        collapse();
         e.preventDefault();
-      } else if (!mediaFullyExpanded) {
+      } else if (!mediaFullyExpandedRef.current) {
         e.preventDefault();
         const scrollFactor = deltaY < 0 ? 0.008 : 0.005;
         const scrollDelta = deltaY * scrollFactor;
         const newProgress = Math.min(
-          Math.max(scrollProgress + scrollDelta, 0),
+          Math.max(scrollProgressRef.current + scrollDelta, 0),
           1
         );
-        setScrollProgress(newProgress);
-
-        if (newProgress >= 1) {
-          setMediaFullyExpanded(true);
-          setShowContent(true);
-        } else if (newProgress < 0.75) {
-          setShowContent(false);
-        }
-
-        setTouchStartY(touchY);
+        updateProgress(newProgress);
+        touchStartYRef.current = touchY;
       }
     };
 
     const handleTouchEnd = () => {
-      setTouchStartY(0);
+      touchStartYRef.current = 0;
     };
 
     const handleScroll = () => {
-      if (!mediaFullyExpanded) {
+      if (!mediaFullyExpandedRef.current && window.scrollY !== 0) {
         window.scrollTo(0, 0);
       }
     };
@@ -104,7 +111,9 @@ export function ScrollExpansionHero({
       );
       if (!target) return;
       const href = target.getAttribute("href");
-      if (href && href !== "#inicio" && !mediaFullyExpanded) {
+      if (href && href !== "#inicio" && !mediaFullyExpandedRef.current) {
+        mediaFullyExpandedRef.current = true;
+        scrollProgressRef.current = 1;
         setMediaFullyExpanded(true);
         setShowContent(true);
         setScrollProgress(1);
@@ -126,7 +135,7 @@ export function ScrollExpansionHero({
       window.removeEventListener("touchend", handleTouchEnd);
       document.removeEventListener("click", handleAnchorClick, true);
     };
-  }, [scrollProgress, mediaFullyExpanded, touchStartY]);
+  }, []);
 
   useEffect(() => {
     const checkIfMobile = () => {

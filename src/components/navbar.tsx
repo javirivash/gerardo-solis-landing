@@ -10,14 +10,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { WHATSAPP_URL_ADVISORY } from "@/lib/constants";
-
-const navLinks = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Sobre Mí", href: "#sobre-mi" },
-  { label: "Propiedades", href: "#propiedades" },
-  { label: "Contacto", href: "#contacto" },
-];
+import { NAV_LINKS, WHATSAPP_URL_ADVISORY } from "@/lib/constants";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -27,18 +20,18 @@ export default function Navbar() {
       <div className="mx-auto max-w-6xl flex items-center justify-between px-6 py-4">
         <a
           href="#inicio"
-          className="font-serif text-xl font-bold tracking-tight text-foreground cursor-pointer"
+          className="font-serif text-xl font-bold tracking-tight text-foreground"
         >
           Gerardo Solís
         </a>
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
+          {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 cursor-pointer"
+              className="font-sans text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
             >
               {link.label}
             </a>
@@ -71,12 +64,12 @@ export default function Navbar() {
           <SheetContent side="right" className="w-72">
             <SheetTitle className="font-serif text-lg">Menú</SheetTitle>
             <div className="flex flex-col gap-4 mt-8 px-4">
-              {navLinks.map((link) => (
+              {NAV_LINKS.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="font-sans text-base font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 cursor-pointer"
+                  className="font-sans text-base font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
                 >
                   {link.label}
                 </a>
