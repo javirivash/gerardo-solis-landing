@@ -67,7 +67,7 @@ Follow this workflow in order. Do not skip phases. Use the specified tool for ea
 
 ## Pre-deploy TODOs
 
-- [ ] Set `NEXT_PUBLIC_SITE_URL` env var to the real production domain (currently falls back to placeholder `https://gerardosolis.mx` in `src/app/layout.tsx`)
+- [ ] Set `NEXT_PUBLIC_SITE_URL` env var to the real production domain and update the fallback in `src/app/layout.tsx:23` + the Live URL in `README.md` (currently both point to the preview domain `https://gs-landing-preview.netlify.app`)
 - [ ] Replace Open Graph image with a dedicated 1200×630 social card (currently reuses `/hero-image-2.jpg`)
 
 ## Progress
